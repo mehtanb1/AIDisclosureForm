@@ -282,25 +282,31 @@
         }
 
         /* Print-Specific Styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #preview-pane, #preview-pane * {
-                visibility: visible;
-            }
-            #preview-pane {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                border: none;
-                box-shadow: none;
-                padding: 0;
-            }
-            .container {
-                display: block;
-            }
+       /* --- REPLACE the old @media print block with this one --- */
+@media print {
+    /* Hide the form on the left, the main title, and all buttons */
+    body > h1, #ai-disclosure-form, .form-actions {
+        display: none;
+    }
+
+    /* Reset the page layout for printing */
+    .container {
+        display: block; /* Removes the two-column grid */
+    }
+
+    /* Ensure the preview pane takes up the full page */
+    #preview-container {
+        position: static;
+        max-height: none;
+        overflow: visible;
+    }
+    #preview-pane {
+        width: 100%;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+}
             /* Hides the print button itself when printing */
             #print-btn-container {
                 visibility: hidden;
@@ -754,3 +760,4 @@
     </script>
 </body>
 </html>
+

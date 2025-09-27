@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive AI Disclosure Generator</title>
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --secondary-color: #2c3e50;
+            --light-gray: #f4f6f7;
+            --medium-gray: #dfe6e9;
+            --dark-gray: #555;
+            --accent-green: #27ae60;
+            --accent-red: #c0392b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-gray);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        h1 {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
+        /* Form Styling */
+        #ai-disclosure-form {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        fieldset {
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            transition: opacity 0.3s;
+        }
+        
+        fieldset:disabled {
+            opacity: 0.6;
+        }
+
+        legend {
+            font-size: 1.4em;
+            font-weight: bold;
+            padding: 0 10px;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label, .details-box label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .details-box textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-group textarea, .details-box textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .details-box textarea {
+            min-height: 60px;
+        }
+
+        .date-range-group {
+            display: flex;
+            gap: 20px;
+        }
+        .date-range-group > div {
+            flex: 1;
+        }
+
+        .ai-question p {
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .sub-items-container {
+            border-left: 3px solid var(--medium-gray);
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+
+        .item-group {
+            margin-bottom: 20px;
+        }
+
+        .item-group > label {
+            font-weight: bold;
+        }
+        
+        .usage-options {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+
+        .usage-options label {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+
+        .usage-options input[type="radio"] {
+            margin-right: 10px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .acceptable-use {
+            border-left: 5px solid var(--accent-green);
+        }
+
+        .not-acceptable-use {
+            border-left: 5px solid var(--accent-red);
+        }
+        
+        .usage-description {
+            font-style: italic;
+            color: var(--dark-gray);
+        }
+
+        .details-box {
+            margin-top: 12px;
+            padding: 12px;
+            border-left: 3px solid var(--primary-color);
+            background-color: #f8f9fa;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Button Styling */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .form-actions button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.3s;
+        }
+        
+        .form-actions button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .form-actions .save-btn {
+            background-color: #7f8c8d;
+            color: white;
+        }
+        .form-actions .save-btn:hover:not(:disabled) {
+            background-color: #95a5a6;
+        }
+        .form-actions .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .form-actions .submit-btn:hover:not(:disabled) {
+            background-color: #3498db;
+        }
+
+
+        /* Preview Pane Styling */
+        #preview-container {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+        #preview-pane {
+            background-color: #ffffff;
+            border: 1px solid var(--medium-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        #preview-pane h2 {
+            text-align: center;
+            margin-top: 0;
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 10px;
+        }
+        #preview-pane h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+            padding-bottom: 5px;
+        }
+        #preview-pane p {
+            margin: 0.2rem 0;
+            word-wrap: break-word;
+        }
+        #preview-pane strong {
+            color: var(--secondary-color);
+        }
+        #disclosure-ref {
+            text-align: center;
+            font-size: 1.1em;
+            padding: 10px;
+            margin-bottom: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            border: 1px solid var(--medium-gray);
+        }
+        #disclosure-ref strong {
+            color: var(--primary-color);
+        }
+        #preview-pane ul {
+            padding-left: 20px;
+            margin-top: 0.5rem;
+        }
+        #preview-pane li {
+            margin-bottom: 1rem;
+        }
+        #preview-pane .placeholder {
+            color: #95a5a6;
+            text-align: center;
+            font-style: italic;
+            padding: 2rem 0;
+        }
+        .preview-list-acceptable h3 { color: var(--accent-green); }
+        .preview-list-not-acceptable h3 { color: var(--accent-red); }
+        .preview-details {
+            padding: 8px 12px;
+            margin-top: 8px;
+            background-color: #f1f3f5;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            border-left: 3px solid var(--medium-gray);
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Interactive AI Disclosure Generator</h1>
+
+    <div class="container">
+        <form id="ai-disclosure-form">
+            <fieldset>
+                <legend>Manuscript and Author Details</legend>
+                <div class="form-group">
+                    <label for="manuscript_title">Manuscript Title:</label>
+                    <input type="text" id="manuscript_title" name="manuscript_title">
+                </div>
+                <div class="form-group">
+                    <label for="author_name">Corresponding Author Name:</label>
+                    <input type="text" id="author_name" name="author_name">
+                </div>
+                <div class="form-group">
+                    <label for="author_email">Corresponding Author Email:</label>
+                    <input type="email" id="author_email" name="author_email">
+                </div>
+                <div class="form-group">
+                    <label>AI Use Date Range:</label>
+                    <div class="date-range-group">
+                        <div>
+                            <label for="start_date" style="font-weight:normal;">Start Date</label>
+                            <input type="date" id="start_date" name="start_date">
+                        </div>
+                        <div>
+                            <label for="end_date" style="font-weight:normal;">End Date</label>
+                            <input type="date" id="end_date" name="end_date">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ai_tools">List of AI Tools Used (with version numbers):</label>
+                    <textarea id="ai_tools" name="ai_tools" placeholder="e.g., ChatGPT 4.0, Elicit.org, Midjourney v6.0"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="target_journal">Target Journal Name:</label>
+                    <input type="text" id="target_journal" name="target_journal">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Conceptual Contributions</legend>
+                <div class="ai-question">
+                    <p>Did you use AI for this domain?</p>
+                    <label><input type="radio" name="conceptual_ai_used" value="yes"> Yes</label>
+                    <label><input type="radio" name="conceptual_ai_used" value="no" checked> No</label>
+                </div>
+                <div id="conceptual_details" class="sub-items-container hidden">
+                    <p>Please specify how you used AI:</p>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="conceptual_task" value="idea_generation"> Idea Generation and Refinement</label>
+                        <div class="usage-options hidden">
+                            <label class="acceptable-use"><input type="radio" name="idea_generation_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Author/s generated the initial idea/s or hypothesis and used AI to brainstorm refinements.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="idea_generation_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Asked AI to originate the initial idea or hypothesis without significant prior human thought process, research or discussion.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="idea_generation_details">Details:</label>
+                            <textarea name="idea_generation_details" id="idea_generation_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="conceptual_task" value="structure_flow"> Structure/flow</label>
+                        <div class="usage-options hidden">
+                            <label class="acceptable-use"><input type="radio" name="structure_flow_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Author/s came up with the initial outline, flow and structure (including section headers and paragraphs) of the manuscript before asking AI for suggestions. Author/s reviewed the AI input and edited it appropriately before applying it.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="structure_flow_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Asked AI to create the initial outline, flow and structure of a manuscript. Using the AI output without human review or edits.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="structure_flow_details">Details:</label>
+                            <textarea name="structure_flow_details" id="structure_flow_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="conceptual_task" value="argument_testing"> Argument Testing and Critical Analysis</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="argument_testing_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Asking AI to identify weaknesses, counter arguments or missing perspectives on a near final draft of the manuscript.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="argument_testing_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Asking AI to write the limitations, discussions or conclusion sections of a manuscript without an initial human draft.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="argument_testing_details">Details:</label>
+                            <textarea name="argument_testing_details" id="argument_testing_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="conceptual_task" value="summarization"> Summarization/ Synthesis</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="summarization_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Using AI to condense complex information from multiple sources, identify key themes, or synthesize findings with human verification of accuracy and review of selection of content being summarized.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="summarization_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting AI selection of content, summarization and synthesis without human review.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="summarization_details">Details:</label>
+                            <textarea name="summarization_details" id="summarization_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                     <div class="item-group">
+                        <label><input type="checkbox" name="conceptual_task" value="analogies"> Conceptual Analogies or Frameworks</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="analogies_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Asking LLMs to propose metaphors or conceptual models to explain complex ideas, followed by human validation and adaptation.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="analogies_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using AI generated models or metaphors without ensuring that they fit the intended message of the manuscript.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="analogies_details">Details:</label>
+                            <textarea name="analogies_details" id="analogies_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="conceptual_task" value="visuals"> Visual Abstracts and Infographics</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="visuals_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Utilizing AI to draft visual abstracts or infographics based on manuscript content, with subsequent human review, editing, and factual verification and attribution to AI.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="visuals_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting AI generated visual content without human review and verification of accuracy or copyrighted content or style.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="visuals_details">Details:</label>
+                            <textarea name="visuals_details" id="visuals_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Linguistic Assistance</legend>
+                <div class="ai-question">
+                    <p>Did you use AI for this domain?</p>
+                    <label><input type="radio" name="linguistic_ai_used" value="yes"> Yes</label>
+                    <label><input type="radio" name="linguistic_ai_used" value="no" checked> No</label>
+                </div>
+                <div id="linguistic_details" class="sub-items-container hidden">
+                    <p>Please specify how you used AI:</p>
+                     <div class="item-group">
+                        <label><input type="checkbox" name="linguistic_task" value="language_editing"> Language Editing</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="language_editing_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Using AI for grammar, spelling, punctuation.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="language_editing_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting edits without human review, potentially altering scientific meaning.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="language_editing_details">Details:</label>
+                            <textarea name="language_editing_details" id="language_editing_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                     <div class="item-group">
+                        <label><input type="checkbox" name="linguistic_task" value="clarity_readability"> Clarity, Conciseness and Readability</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="clarity_readability_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Using AI for sentence-level editing to refine phrasing and syntax, streamline wording, and organize sentence/paragraph structure so the text is clear, concise, and easy to read, without changing meaning with subsequent human review and editing.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="clarity_readability_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using AI edits without human verification for accuracy, shifts in scientific meaning or terminology, or additions/removals of essential content.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="clarity_readability_details">Details:</label>
+                            <textarea name="clarity_readability_details" id="clarity_readability_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                     <div class="item-group">
+                        <label><input type="checkbox" name="linguistic_task" value="translation"> Language Translation for non-native speakers</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="translation_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Using AI to generate a translation draft with subsequent review by bilingual co-author, subject-matter expert or professional translator.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="translation_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using the AI generated translation without a human review.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="translation_details">Details:</label>
+                            <textarea name="translation_details" id="translation_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="linguistic_task" value="stylistic_consistency"> Stylistic Consistency</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="stylistic_consistency_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">AI may be used to standardize to a journal’s style and formatting per a specified guide, but authors must review changes, ensure no scientific meaning or data are altered.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="stylistic_consistency_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using the AI generated manuscript changes without human review and editing.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="stylistic_consistency_details">Details:</label>
+                            <textarea name="stylistic_consistency_details" id="stylistic_consistency_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="linguistic_task" value="word_count"> Adjusting for required Word Count</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="word_count_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">AI may be used to modify the abstract or article to meet a journal’s word count, but authors must review changes, ensure no scientific meaning or data are altered.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="word_count_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using the AI generated manuscript changes without human review and editing.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="word_count_details">Details:</label>
+                            <textarea name="word_count_details" id="word_count_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                     <div class="item-group">
+                        <label><input type="checkbox" name="linguistic_task" value="title_suggestions"> Suggesting Title Variations or Subheadings</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="title_suggestions_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">AI may be used to suggest variations of titles or sub-headings that humans choose from.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="title_suggestions_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting the AI suggestion without human review to ensure alignment with the manuscript.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="title_suggestions_details">Details:</label>
+                            <textarea name="title_suggestions_details" id="title_suggestions_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Research Assistance</legend>
+                <div class="ai-question">
+                    <p>Did you use AI for this domain?</p>
+                    <label><input type="radio" name="research_ai_used" value="yes"> Yes</label>
+                    <label><input type="radio" name="research_ai_used" value="no" checked> No</label>
+                </div>
+                <div id="research_details" class="sub-items-container hidden">
+                    <p>Please specify how you used AI:</p>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="research_task" value="question_refinement"> Research Question Refinement</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="question_refinement_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Clarify constructs e.g. help draft the specific PICO question but author/s select and justify the final specifications.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="question_refinement_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Delegating question selection or outcome specification to AI without human review.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="question_refinement_details">Details:</label>
+                            <textarea name="question_refinement_details" id="question_refinement_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="research_task" value="search_strategy"> Search Strategy and Strings</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="search_strategy_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Draft Boolean strings, MeSH terms and filters for PubMed search validated by author/s or information specialist.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="search_strategy_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using AI generated search strategies without human or expert review.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="search_strategy_details">Details:</label>
+                            <textarea name="search_strategy_details" id="search_strategy_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                    <div class="item-group">
+                        <label><input type="checkbox" name="research_task" value="literature_retrieval"> AI-Assisted Literature Retrieval and Aggregation</label>
+                        <div class="usage-options hidden">
+                             <label class="acceptable-use"><input type="radio" name="literature_retrieval_usage" value="acceptable"> <div><strong>Generally Acceptable:</strong> <span class="usage-description">Use tools like Elicit and Undermind to propose candidate papers and clusters for human screening or supplementary inputs. Author/s information specialists use documented databases for searches for missed articles.</span></div></label>
+                            <label class="not-acceptable-use"><input type="radio" name="literature_retrieval_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting AI generated literature search results and summaries without searching documented databases.</span></div></label>
+                        </div>
+                        <div class="details-box hidden">
+                            <label for="literature_retrieval_details">Details:</label>
+                            <textarea name="literature_retrieval_details" id="literature_retrieval_details" placeholder="Provide specific details about this usage..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="form-actions">
+                <button type="button" class="save-btn">Save Progress</button>
+                <button type="button" id="create-disclosure-btn" class="submit-btn">Create Disclosure</button>
+            </div>
+        </form>
+        
+        <div id="preview-container">
+            <div id="preview-pane">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('ai-disclosure-form');
+            const previewPane = document.getElementById('preview-pane');
+            const createBtn = document.getElementById('create-disclosure-btn');
+            const saveBtn = document.querySelector('.save-btn');
+
+            // --- FORM INTERACTIVITY ---
+
+            const setupDomainToggle = (radioGroupName, detailsId) => {
+                const radios = document.querySelectorAll(`input[name="${radioGroupName}"]`);
+                const detailsContainer = document.getElementById(detailsId);
+                radios.forEach(radio => {
+                    radio.addEventListener('change', (event) => {
+                        if (event.target.value === 'yes') {
+                            detailsContainer.classList.remove('hidden');
+                        } else {
+                            detailsContainer.classList.add('hidden');
+                        }
+                        updatePreview();
+                    });
+                });
+            };
+
+            setupDomainToggle('conceptual_ai_used', 'conceptual_details');
+            setupDomainToggle('linguistic_ai_used', 'linguistic_details');
+            setupDomainToggle('research_ai_used', 'research_details');
+
+            const setupCheckboxToggle = () => {
+                const checkboxes = document.querySelectorAll('.item-group > label > input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', (event) => {
+                        const itemGroup = event.target.closest('.item-group');
+                        const optionsDiv = itemGroup.querySelector('.usage-options');
+                        const detailsBox = itemGroup.querySelector('.details-box');
+
+                        if (event.target.checked) {
+                            optionsDiv.classList.remove('hidden');
+                            detailsBox.classList.remove('hidden');
+                        } else {
+                            optionsDiv.classList.add('hidden');
+                            detailsBox.classList.add('hidden');
+                            optionsDiv.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                            detailsBox.querySelector('textarea').value = '';
+                        }
+                        updatePreview();
+                    });
+                });
+            };
+
+            setupCheckboxToggle();
+
+            // --- DYNAMIC PREVIEW GENERATION ---
+
+            const updatePreview = () => {
+                try {
+                    const data = new FormData(form);
+                    
+                    const getValue = (key, placeholder = 'N/A') => data.get(key) || placeholder;
+
+                    const manuscriptTitle = getValue('manuscript_title', '...');
+                    const authorName = getValue('author_name');
+                    const authorEmail = getValue('author_email');
+                    const aiTools = getValue('ai_tools').replace(/\n/g, ', ') || 'None specified';
+                    const journal = getValue('target_journal');
+                    const submittedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                    let acceptableUses = [];
+                    let notAcceptableUses = [];
+
+                    const itemCheckboxes = document.querySelectorAll('.item-group > label > input[type="checkbox"]');
+                    
+                    itemCheckboxes.forEach(checkbox => {
+                        if (checkbox.checked) {
+                            const group = checkbox.closest('.item-group');
+                            const usageName = checkbox.value + '_usage';
+                            const selectedUsage = data.get(usageName);
+
+                            if (selectedUsage) {
+                                const domain = group.closest('fieldset').querySelector('legend').textContent;
+                                const task = group.querySelector('label').textContent.trim();
+                                const radioLabel = group.querySelector(`input[value="${selectedUsage}"]`).closest('label');
+                                const description = radioLabel.querySelector('.usage-description').textContent;
+                                const detailsText = data.get(checkbox.value + '_details');
+
+                                let entry = `<strong>${domain} – ${task}:</strong> ${description}`;
+                                if (detailsText && detailsText.trim() !== '') {
+                                    entry += `<div class="preview-details"><strong>Details:</strong><br>${detailsText.trim()}</div>`;
+                                }
+
+                                if (selectedUsage === 'acceptable') {
+                                    acceptableUses.push(entry);
+                                } else {
+                                    notAcceptableUses.push(entry);
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Preserve the ref number if it exists
+                    const existingRef = previewPane.querySelector('#disclosure-ref');
+
+                    let html = ``;
+                    if(existingRef) {
+                        html += existingRef.outerHTML;
+                    }
+                    html += `<h2>Disclosure Statement Preview</h2>`;
+                    html += `<p><strong>Title:</strong> ${manuscriptTitle}</p>`;
+                    html += `<p><strong>Author:</strong> ${authorName} (${authorEmail})</p>`;
+                    html += `<p><strong>Journal:</strong> ${journal}</p>`;
+                    html += `<p><strong>Date Submitted:</strong> ${submittedDate}</p>`;
+                    html += `<p><strong>AI Tools Used:</strong> ${aiTools}</p>`;
+
+                    if (acceptableUses.length > 0) {
+                        html += `<div class="preview-list-acceptable"><h3>Generally Acceptable Uses of AI</h3><ul>`;
+                        acceptableUses.forEach(use => { html += `<li>${use}</li>`; });
+                        html += `</ul></div>`;
+                    }
+
+                    if (notAcceptableUses.length > 0) {
+                        html += `<div class="preview-list-not-acceptable"><h3>Uses of AI That May Not Be Acceptable</h3><ul>`;
+                        notAcceptableUses.forEach(use => { html += `<li>${use}</li>`; });
+                        html += `</ul></div>`;
+                    }
+
+                    if (acceptableUses.length === 0 && notAcceptableUses.length === 0) {
+                        html += `<p class="placeholder">No AI usage has been reported. Select items from the form to see them appear here.</p>`;
+                    }
+
+                    previewPane.innerHTML = html;
+                } catch (error) {
+                    console.error("An error occurred while updating the preview:", error);
+                    previewPane.innerHTML = `<p style="color:red;">A script error occurred. Please check the console.</p>`;
+                }
+            };
+            
+            // --- FINALIZATION LOGIC ---
+
+            const generateRandomString = (length) => {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            };
+            
+            createBtn.addEventListener('click', function() {
+                // 1. Add Disclosure Reference number to preview
+                const refString = generateRandomString(12);
+                const refElement = document.createElement('p');
+                refElement.id = 'disclosure-ref';
+                refElement.innerHTML = `<strong>Disclosure Reference #:</strong> ${refString}`;
+                
+                // Check if a ref already exists and remove it before adding a new one
+                const existingRef = previewPane.querySelector('#disclosure-ref');
+                if(existingRef) {
+                    existingRef.remove();
+                }
+                
+                previewPane.prepend(refElement);
+
+                // 2. Disable all form elements
+                const allFields = form.querySelectorAll('input, textarea, button');
+                allFields.forEach(field => {
+                    field.disabled = true;
+                });
+                
+                const allFieldsets = form.querySelectorAll('fieldset');
+                allFieldsets.forEach(fieldset => {
+                    fieldset.disabled = true;
+                });
+            });
+            
+            // --- INITIAL RUN ---
+            updatePreview();
+            form.addEventListener('input', updatePreview);
+        });
+    </script>
+</body>
+</html>

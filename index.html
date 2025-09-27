@@ -281,8 +281,6 @@
             border-left: 3px solid var(--medium-gray);
         }
 
-        
-
     </style>
 </head>
 <body>
@@ -719,47 +717,46 @@
                 printBtn.classList.remove('hidden');
             });
             
-            // REPLACE your current printBtn.addEventListener function with this new version.
-printBtn.addEventListener('click', function() {
-    const previewPane = document.getElementById('preview-pane');
-    const printContents = previewPane.innerHTML;
-    const originalStyles = document.querySelector('style').innerHTML;
+            printBtn.addEventListener('click', function() {
+                const previewPane = document.getElementById('preview-pane');
+                const printContents = previewPane.innerHTML;
+                const originalStyles = document.querySelector('style').innerHTML;
 
-    // Open a new window
-    const printWindow = window.open('', '_blank', 'height=600,width=800');
+                // Open a new window
+                const printWindow = window.open('', '_blank', 'height=600,width=800');
 
-    // Write the content and styles to the new window
-    printWindow.document.write(`
-        <html>
-            <head>
-                <title>AI Disclosure Statement</title>
-                <style>
-                    /* Basic styles for the new window */
-                    body { 
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-                        line-height: 1.6; 
-                        color: #333; 
-                        padding: 1.5rem;
-                    }
-                    /* Include all the styles from the original page */
-                    ${originalStyles}
-                </style>
-            </head>
-            <body>
-                ${printContents}
-            </body>
-        </html>
-    `);
+                // Write the content and styles to the new window
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>AI Disclosure Statement</title>
+                            <style>
+                                /* Basic styles for the new window */
+                                body { 
+                                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+                                    line-height: 1.6; 
+                                    color: #333; 
+                                    padding: 1.5rem;
+                                }
+                                /* Include all the styles from the original page */
+                                ${originalStyles}
+                            </style>
+                        </head>
+                        <body>
+                            ${printContents}
+                        </body>
+                    </html>
+                `);
 
-    printWindow.document.close();
-    printWindow.focus(); // Required for some browsers
-    
-    // Use a timeout to ensure content is loaded before printing
-    setTimeout(function() {
-        printWindow.print();
-        printWindow.close();
-    }, 250);
-});
+                printWindow.document.close();
+                printWindow.focus(); // Required for some browsers
+                
+                // Use a timeout to ensure content is loaded before printing
+                setTimeout(function() {
+                    printWindow.print();
+                    printWindow.close();
+                }, 250);
+            });
             
             // --- INITIAL RUN ---
             updatePreview();
@@ -768,5 +765,3 @@ printBtn.addEventListener('click', function() {
     </script>
 </body>
 </html>
-
-

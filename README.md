@@ -4,7 +4,7 @@ An interactive web tool designed to help academic authors, researchers, and stud
 
 This form is based on a framework that categorizes AI use into acceptable and potentially unacceptable practices across different stages of research and writing.
 
-**[➡️ View the Live Demo Here](https://mehtanb1.github.io/AiDisclosureForm/Updated_Form_Interface_with_Code.html)**
+**[➡️ View the Live Demo Here](https://mehtanb1.github.io/AiDisclosureForm/index.html)**
 
 ## 📜 Purpose
 

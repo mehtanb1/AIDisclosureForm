@@ -281,6 +281,32 @@
             border-left: 3px solid var(--medium-gray);
         }
 
+        /* Print-Specific Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #preview-pane, #preview-pane * {
+                visibility: visible;
+            }
+            #preview-pane {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            .container {
+                display: block;
+            }
+            /* Hides the print button itself when printing */
+            #print-btn-container {
+                visibility: hidden;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -536,9 +562,10 @@
         <div id="preview-container">
             <div id="preview-pane">
                 </div>
-        <div class="form-actions" style="margin-top: 15px; justify-content: center;">
-     <button type="button" id="print-btn" class="submit-btn hidden">Print Disclosure</button>
-</div>        </div>
+            <div id="print-btn-container" class="form-actions" style="margin-top: 15px; justify-content: center;">
+                 <button type="button" id="print-btn" class="submit-btn hidden">Print Disclosure</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -546,7 +573,7 @@
             const form = document.getElementById('ai-disclosure-form');
             const previewPane = document.getElementById('preview-pane');
             const createBtn = document.getElementById('create-disclosure-btn');
-            const saveBtn = document.querySelector('.save-btn');
+            const printBtn = document.getElementById('print-btn');
 
             // --- FORM INTERACTIVITY ---
 
@@ -640,7 +667,6 @@
                         }
                     });
                     
-                    // Preserve the ref number if it exists
                     const existingRef = previewPane.querySelector('#disclosure-ref');
 
                     let html = ``;
@@ -689,13 +715,12 @@
             };
             
             createBtn.addEventListener('click', function() {
-                // 1. Add Disclosure Reference number to preview
+                // Add Disclosure Reference number to preview
                 const refString = generateRandomString(12);
                 const refElement = document.createElement('p');
                 refElement.id = 'disclosure-ref';
                 refElement.innerHTML = `<strong>Disclosure Reference #:</strong> ${refString}`;
                 
-                // Check if a ref already exists and remove it before adding a new one
                 const existingRef = previewPane.querySelector('#disclosure-ref');
                 if(existingRef) {
                     existingRef.remove();
@@ -703,7 +728,7 @@
                 
                 previewPane.prepend(refElement);
 
-                // 2. Disable all form elements
+                // Disable all form elements
                 const allFields = form.querySelectorAll('input, textarea, button');
                 allFields.forEach(field => {
                     field.disabled = true;
@@ -713,6 +738,13 @@
                 allFieldsets.forEach(fieldset => {
                     fieldset.disabled = true;
                 });
+                
+                // Show the print button
+                printBtn.classList.remove('hidden');
+            });
+            
+            printBtn.addEventListener('click', function() {
+                window.print();
             });
             
             // --- INITIAL RUN ---
@@ -722,4 +754,3 @@
     </script>
 </body>
 </html>
-

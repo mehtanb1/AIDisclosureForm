@@ -2,9 +2,9 @@
 
 An interactive web tool designed to help academic authors, researchers, and students generate a detailed disclosure statement about their use of Artificial Intelligence in scholarly work.
 
-[cite_start]This form is based on a conceptual framework that categorizes AI use into acceptable and potentially unacceptable practices across different stages of research and writing[cite: 1].
+This form is based on a framework that categorizes AI use into acceptable and potentially unacceptable practices across different stages of research and writing.
 
-**[➡️ View the Live Demo Here](https://mehtanb1.github.io/aidisclosureform/Updated_Form_Interface_with_code.html)**
+**[➡️ View the Live Demo Here](https://mehtanb1.github.io/aidisclosureform/Updated_Form_Interface_with_Code.html)**
 
 ## 📜 Purpose
 

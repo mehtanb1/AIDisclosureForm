@@ -115,6 +115,14 @@
             margin-top: 15px;
             padding-left: 20px;
         }
+        /* New style for the instructional paragraph */
+        .sub-items-container > p {
+            font-style: italic;
+            color: var(--dark-gray);
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+        }
 
         .item-group {
             margin-bottom: 20px;
@@ -289,6 +297,7 @@
 
     <div class="container">
         <form id="ai-disclosure-form">
+            <!-- Manuscript and Author Details -->
             <fieldset>
                 <legend>Manuscript and Author Details</legend>
                 <div class="form-group">
@@ -326,6 +335,7 @@
                 </div>
             </fieldset>
 
+            <!-- Conceptual Contributions -->
             <fieldset>
                 <legend>Conceptual Contributions</legend>
                 <div class="ai-question">
@@ -334,7 +344,7 @@
                     <label><input type="radio" name="conceptual_ai_used" value="no" checked> No</label>
                 </div>
                 <div id="conceptual_details" class="sub-items-container hidden">
-                    <p>Please specify how you used AI:</p>
+                    <p>Check one of the boxes in the two columns - generally acceptable or "May not be acceptable". Then add any comments if necessary to explain your particular use of AI tools:</p>
                     <div class="item-group">
                         <label><input type="checkbox" name="conceptual_task" value="idea_generation"> Idea Generation and Refinement</label>
                         <div class="usage-options hidden">
@@ -342,8 +352,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="idea_generation_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Asked AI to originate the initial idea or hypothesis without significant prior human thought process, research or discussion.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="idea_generation_details">Details:</label>
-                            <textarea name="idea_generation_details" id="idea_generation_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="idea_generation_comments">Comments:</label>
+                            <textarea name="idea_generation_comments" id="idea_generation_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -353,8 +363,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="structure_flow_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Asked AI to create the initial outline, flow and structure of a manuscript. Using the AI output without human review or edits.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="structure_flow_details">Details:</label>
-                            <textarea name="structure_flow_details" id="structure_flow_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="structure_flow_comments">Comments:</label>
+                            <textarea name="structure_flow_comments" id="structure_flow_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -364,8 +374,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="argument_testing_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Asking AI to write the limitations, discussions or conclusion sections of a manuscript without an initial human draft.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="argument_testing_details">Details:</label>
-                            <textarea name="argument_testing_details" id="argument_testing_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="argument_testing_comments">Comments:</label>
+                            <textarea name="argument_testing_comments" id="argument_testing_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -375,8 +385,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="summarization_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting AI selection of content, summarization and synthesis without human review.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="summarization_details">Details:</label>
-                            <textarea name="summarization_details" id="summarization_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="summarization_comments">Comments:</label>
+                            <textarea name="summarization_comments" id="summarization_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                      <div class="item-group">
@@ -386,8 +396,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="analogies_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using AI generated models or metaphors without ensuring that they fit the intended message of the manuscript.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="analogies_details">Details:</label>
-                            <textarea name="analogies_details" id="analogies_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="analogies_comments">Comments:</label>
+                            <textarea name="analogies_comments" id="analogies_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -397,13 +407,14 @@
                             <label class="not-acceptable-use"><input type="radio" name="visuals_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting AI generated visual content without human review and verification of accuracy or copyrighted content or style.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="visuals_details">Details:</label>
-                            <textarea name="visuals_details" id="visuals_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="visuals_comments">Comments:</label>
+                            <textarea name="visuals_comments" id="visuals_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                 </div>
             </fieldset>
 
+            <!-- Linguistic Assistance -->
             <fieldset>
                 <legend>Linguistic Assistance</legend>
                 <div class="ai-question">
@@ -412,7 +423,7 @@
                     <label><input type="radio" name="linguistic_ai_used" value="no" checked> No</label>
                 </div>
                 <div id="linguistic_details" class="sub-items-container hidden">
-                    <p>Please specify how you used AI:</p>
+                    <p>Check one of the boxes in the two columns - generally acceptable or "May not be acceptable". Then add any comments if necessary to explain your particular use of AI tools:</p>
                      <div class="item-group">
                         <label><input type="checkbox" name="linguistic_task" value="language_editing"> Language Editing</label>
                         <div class="usage-options hidden">
@@ -420,8 +431,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="language_editing_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting edits without human review, potentially altering scientific meaning.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="language_editing_details">Details:</label>
-                            <textarea name="language_editing_details" id="language_editing_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="language_editing_comments">Comments:</label>
+                            <textarea name="language_editing_comments" id="language_editing_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                      <div class="item-group">
@@ -431,8 +442,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="clarity_readability_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using AI edits without human verification for accuracy, shifts in scientific meaning or terminology, or additions/removals of essential content.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="clarity_readability_details">Details:</label>
-                            <textarea name="clarity_readability_details" id="clarity_readability_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="clarity_readability_comments">Comments:</label>
+                            <textarea name="clarity_readability_comments" id="clarity_readability_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                      <div class="item-group">
@@ -442,8 +453,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="translation_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using the AI generated translation without a human review.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="translation_details">Details:</label>
-                            <textarea name="translation_details" id="translation_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="translation_comments">Comments:</label>
+                            <textarea name="translation_comments" id="translation_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -453,8 +464,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="stylistic_consistency_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using the AI generated manuscript changes without human review and editing.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="stylistic_consistency_details">Details:</label>
-                            <textarea name="stylistic_consistency_details" id="stylistic_consistency_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="stylistic_consistency_comments">Comments:</label>
+                            <textarea name="stylistic_consistency_comments" id="stylistic_consistency_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -464,8 +475,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="word_count_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using the AI generated manuscript changes without human review and editing.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="word_count_details">Details:</label>
-                            <textarea name="word_count_details" id="word_count_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="word_count_comments">Comments:</label>
+                            <textarea name="word_count_comments" id="word_count_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                      <div class="item-group">
@@ -475,13 +486,14 @@
                             <label class="not-acceptable-use"><input type="radio" name="title_suggestions_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting the AI suggestion without human review to ensure alignment with the manuscript.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="title_suggestions_details">Details:</label>
-                            <textarea name="title_suggestions_details" id="title_suggestions_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="title_suggestions_comments">Comments:</label>
+                            <textarea name="title_suggestions_comments" id="title_suggestions_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                 </div>
             </fieldset>
 
+            <!-- Research Assistance -->
             <fieldset>
                 <legend>Research Assistance</legend>
                 <div class="ai-question">
@@ -490,7 +502,7 @@
                     <label><input type="radio" name="research_ai_used" value="no" checked> No</label>
                 </div>
                 <div id="research_details" class="sub-items-container hidden">
-                    <p>Please specify how you used AI:</p>
+                    <p>Check one of the boxes in the two columns - generally acceptable or "May not be acceptable". Then add any comments if necessary to explain your particular use of AI tools:</p>
                     <div class="item-group">
                         <label><input type="checkbox" name="research_task" value="question_refinement"> Research Question Refinement</label>
                         <div class="usage-options hidden">
@@ -498,8 +510,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="question_refinement_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Delegating question selection or outcome specification to AI without human review.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="question_refinement_details">Details:</label>
-                            <textarea name="question_refinement_details" id="question_refinement_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="question_refinement_comments">Comments:</label>
+                            <textarea name="question_refinement_comments" id="question_refinement_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -509,8 +521,8 @@
                             <label class="not-acceptable-use"><input type="radio" name="search_strategy_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Using AI generated search strategies without human or expert review.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="search_strategy_details">Details:</label>
-                            <textarea name="search_strategy_details" id="search_strategy_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="search_strategy_comments">Comments:</label>
+                            <textarea name="search_strategy_comments" id="search_strategy_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                     <div class="item-group">
@@ -520,13 +532,14 @@
                             <label class="not-acceptable-use"><input type="radio" name="literature_retrieval_usage" value="not_acceptable"> <div><strong>May not be acceptable:</strong> <span class="usage-description">Accepting AI generated literature search results and summaries without searching documented databases.</span></div></label>
                         </div>
                         <div class="details-box hidden">
-                            <label for="literature_retrieval_details">Details:</label>
-                            <textarea name="literature_retrieval_details" id="literature_retrieval_details" placeholder="Provide specific details about this usage..."></textarea>
+                            <label for="literature_retrieval_comments">Comments:</label>
+                            <textarea name="literature_retrieval_comments" id="literature_retrieval_comments" placeholder="Provide comments to explain your particular use..."></textarea>
                         </div>
                     </div>
                 </div>
             </fieldset>
 
+            <!-- Form Actions -->
             <div class="form-actions">
                 <button type="button" class="save-btn">Save Progress</button>
                 <button type="button" id="create-disclosure-btn" class="submit-btn">Create Disclosure</button>
@@ -535,7 +548,9 @@
         
         <div id="preview-container">
             <div id="preview-pane">
-                </div>
+                <!-- Content will be dynamically generated here by JavaScript -->
+            </div>
+            <!-- Print Button Container -->
             <div id="print-btn-container" class="form-actions" style="margin-top: 15px; justify-content: center;">
                  <button type="button" id="print-btn" class="submit-btn hidden">Print Disclosure</button>
             </div>
@@ -548,6 +563,7 @@
             const previewPane = document.getElementById('preview-pane');
             const createBtn = document.getElementById('create-disclosure-btn');
             const printBtn = document.getElementById('print-btn');
+            const allStyles = document.querySelector('style').innerHTML; // Capture styles for printing
 
             // --- FORM INTERACTIVITY ---
 
@@ -576,16 +592,16 @@
                     checkbox.addEventListener('change', (event) => {
                         const itemGroup = event.target.closest('.item-group');
                         const optionsDiv = itemGroup.querySelector('.usage-options');
-                        const detailsBox = itemGroup.querySelector('.details-box');
+                        const commentsBox = itemGroup.querySelector('.details-box'); // Changed from detailsBox
 
                         if (event.target.checked) {
                             optionsDiv.classList.remove('hidden');
-                            detailsBox.classList.remove('hidden');
+                            commentsBox.classList.remove('hidden'); // Changed from detailsBox
                         } else {
                             optionsDiv.classList.add('hidden');
-                            detailsBox.classList.add('hidden');
+                            commentsBox.classList.add('hidden'); // Changed from detailsBox
                             optionsDiv.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-                            detailsBox.querySelector('textarea').value = '';
+                            commentsBox.querySelector('textarea').value = ''; // Changed from detailsBox
                         }
                         updatePreview();
                     });
@@ -625,11 +641,11 @@
                                 const task = group.querySelector('label').textContent.trim();
                                 const radioLabel = group.querySelector(`input[value="${selectedUsage}"]`).closest('label');
                                 const description = radioLabel.querySelector('.usage-description').textContent;
-                                const detailsText = data.get(checkbox.value + '_details');
+                                const commentsText = data.get(checkbox.value + '_comments'); // Changed from _details
 
                                 let entry = `<strong>${domain} – ${task}:</strong> ${description}`;
-                                if (detailsText && detailsText.trim() !== '') {
-                                    entry += `<div class="preview-details"><strong>Details:</strong><br>${detailsText.trim()}</div>`;
+                                if (commentsText && commentsText.trim() !== '') { // Changed from detailsText
+                                    entry += `<div class="preview-details"><strong>Comments:</strong><br>${commentsText.trim()}</div>`; // Changed label and variable
                                 }
 
                                 if (selectedUsage === 'acceptable') {
@@ -718,9 +734,7 @@
             });
             
             printBtn.addEventListener('click', function() {
-                const previewPane = document.getElementById('preview-pane');
                 const printContents = previewPane.innerHTML;
-                const originalStyles = document.querySelector('style').innerHTML;
 
                 // Open a new window
                 const printWindow = window.open('', '_blank', 'height=600,width=800');
@@ -739,7 +753,7 @@
                                     padding: 1.5rem;
                                 }
                                 /* Include all the styles from the original page */
-                                ${originalStyles}
+                                ${allStyles}
                             </style>
                         </head>
                         <body>
